@@ -1,7 +1,6 @@
 from collections import Counter
 from itertools import permutations
-import pytest
-from hash import zip_sort_and_unzip
+
 from hash import *
 
 
@@ -9,24 +8,24 @@ class NoZeros(Exception):
     pass
 
 
-def sum_of_rows(adjacency_matrix):
-    return np.sum(adjacency_matrix, axis=1)
+def sum_of_rows(matrix):
+    return np.sum(matrix, axis=1)
 
 
-def sum_of_cols(adjacency_matrix):
-    return np.sum(adjacency_matrix, axis=0)
+def sum_of_cols(matrix):
+    return np.sum(matrix, axis=0)
 
 
-def create_1_by_1_adjacency_matrix():
+def create_1_by_1_matrix():
     return np.zeros((1, 1))
 
 
-def add_one_to_first_zero_in_matrix(adjacency_matrix):
-    for row_index, row in enumerate(adjacency_matrix):
+def add_one_to_first_zero_in_matrix(matrix):
+    for row_index, row in enumerate(matrix):
         for col_index, col in enumerate(row):
             if col == 0:
-                adjacency_matrix[row_index, col_index] = 1
-                return adjacency_matrix
+                matrix[row_index, col_index] = 1
+                return matrix
     raise NoZeros
 
 
@@ -54,9 +53,9 @@ def hash_test(matrix):
 
     for row_permutation in row_permutations:
         for col_permutation in col_permutations:
-            temp = permute_matrix_from_index(matrix, row_permutation, col_permutation)
+            permuted_matrix = permute_matrix_from_index(matrix, row_permutation, col_permutation)
 
-            sorted_edges = hash_adjacency_matrix(temp)
+            sorted_edges = hash_adjacency_matrix(permuted_matrix)
 
             rows = sum_of_rows(sorted_edges)
             cols = sum_of_cols(sorted_edges)
@@ -73,16 +72,51 @@ def hash_test(matrix):
     return hash_dict
 
 
-matrix = create_1_by_1_adjacency_matrix()
-full_dict = set()
-for i in range(20):
-    print(f"i: {i} matrix shape: {matrix.shape}")
+def fast_hash_testing(matrix):
+    hash_dict = set()
 
-    try:
-        matrix = add_one_to_first_zero_in_matrix(matrix)
-    except NoZeros:
-        matrix = np.pad(matrix, ((0, 1), (0, 1)))
+    m1 = np.fliplr(matrix)
+    m2 = np.flipud(m1)
+    m3 = np.flipud(matrix)
 
-    new_hash_dict = hash_test(matrix)
-    assert new_hash_dict not in full_dict
-    full_dict.update(new_hash_dict)
+    sorted_edges_matrix = hash_adjacency_matrix(matrix)
+    sorted_edges_matrix = str(np.array(sorted_edges_matrix).flatten())
+
+    sorted_edges_m1 = hash_adjacency_matrix(m1)
+    sorted_edges_m1 = str(np.array(sorted_edges_m1).flatten())
+
+    sorted_edges_m2 = hash_adjacency_matrix(m2)
+    sorted_edges_m2 = str(np.array(sorted_edges_m2).flatten())
+
+    sorted_edges_m3 = hash_adjacency_matrix(m3)
+    sorted_edges_m3 = str(np.array(sorted_edges_m3).flatten())
+
+    hash_dict.add(sorted_edges_matrix)
+    hash_dict.add(sorted_edges_m1)
+    hash_dict.add(sorted_edges_m2)
+    hash_dict.add(sorted_edges_m3)
+
+    assert len(hash_dict) == 1
+
+
+def gen(n, m):
+    for i in range(2 ** (n * m)):
+        yield np.array([int(k) for k in "{0:b}".format(i).zfill(n * m)]).reshape(n, m)
+
+
+sizes = 4
+print(f"num of matrices: {int(2 ** (sizes * sizes))}")
+count = 0
+for mat in gen(sizes, sizes):
+    if count % 1000 == 0:
+        print(count)
+    fast_hash_testing(mat)
+    count += 1
+
+
+sizes = 50
+for i in range(1000):
+    if i % 50 == 0:
+        print(i)
+    matrix = np.random.randint(2, size=(sizes, sizes))
+    fast_hash_testing(matrix)
