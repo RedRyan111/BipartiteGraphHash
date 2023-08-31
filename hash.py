@@ -17,13 +17,26 @@ def hash_adjacency_matrix_helper(matrix):
     r_diag = np.diag(r_collisions).reshape(1, -1).repeat(r_collisions.shape[0], axis=0)
     stacked_matrices = np.stack([r_collisions, r_diag], axis=2)
 
-    for row_index in range(stacked_matrices.shape[0]):
-        stacked_matrices[row_index] = np.sort(stacked_matrices[row_index], axis=0)
+    #for row_index in range(stacked_matrices.shape[0]):
+    #    stacked_matrices[row_index] = np.sort(stacked_matrices[row_index], axis=0)
+
+    stacked_matrices = np.sort(stacked_matrices, axis=1)
 
     matrix = np.array([x for _, _, x in sorted(
         zip(stacked_matrices[:, :, 0].tolist(), stacked_matrices[:, :, 1].tolist(), matrix.tolist()))])
 
     return matrix
+
+def new_hash_adjacency_matrix_helper(matrix):
+
+    r_collisions = row_collisions(matrix)
+    r_diag = np.diag(r_collisions).reshape(1, -1).repeat(r_collisions.shape[0], axis=0)
+
+    stacked_matrices = np.stack([r_diag, np.sort(r_collisions)], axis=2)
+
+    #stacked_matrices = np.sort(stacked_matrices, axis=1)
+
+    return matrix[np.argsort(stacked_matrices, axis=1)[0, :, 0]]
 
 
 def get_score(adjacency_matrix):

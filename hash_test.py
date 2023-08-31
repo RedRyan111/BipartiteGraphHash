@@ -16,10 +16,6 @@ def sum_of_cols(matrix):
     return np.sum(matrix, axis=0)
 
 
-def create_1_by_1_matrix():
-    return np.zeros((1, 1))
-
-
 def add_one_to_first_zero_in_matrix(matrix):
     for row_index, row in enumerate(matrix):
         for col_index, col in enumerate(row):
