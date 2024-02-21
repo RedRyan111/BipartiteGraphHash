@@ -102,10 +102,11 @@ def gen(n, m):
 
 sizes = 4
 print(f"num of matrices: {int(2 ** (sizes * sizes))}")
+num_of_matrices = int(2 ** (sizes * sizes))
 count = 0
 for mat in gen(sizes, sizes):
     if count % 1000 == 0:
-        print(count)
+        print(f"{count}/{num_of_matrices}")
     fast_hash_testing(mat)
     count += 1
 

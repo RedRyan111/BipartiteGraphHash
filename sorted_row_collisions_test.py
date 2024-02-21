@@ -22,7 +22,7 @@ def test_full_sorted_row_collisions():
     assert np.allclose(pred_r_collisions, true_r_collisions)
 
 
-def test_matrix_2():
+def test_matrix_1():
     a = np.zeros((4, 4))
     a[3, 3] = 1
 
@@ -36,7 +36,7 @@ def test_matrix_2():
     assert np.allclose(hash(b), hash(c))
 
 
-def test_matrix_3(hash_matrix):
+def test_matrix_2(hash_matrix):
     a = np.array([[0, 0, 0, 0],
                   [0, 0, 0, 1],
                   [1, 1, 0, 0],
@@ -48,6 +48,25 @@ def test_matrix_3(hash_matrix):
                   [1, 0, 0, 1]])
 
     assert np.allclose(hash_matrix(a), hash_matrix(b))
+
+
+def test_matrix_3(hash_matrix):
+    a = [[0, 0, 1, 0], [0, 0, 1, 0],
+         [0, 0, 0, 1],
+         [0, 1, 0, 1]]
+
+    b = [[0, 0, 1, 0],
+         [0, 0, 0, 1],
+         [0, 0, 1, 0],
+         [0, 1, 0, 1]]
+
+    c = [[0, 1, 0, 0],
+         [0, 1, 0, 0],
+         [0, 0, 0, 1],
+         [0, 0, 1, 1]]
+
+    assert np.allclose(hash_matrix(a), hash_matrix(b))
+    assert np.allclose(hash_matrix(b), hash_matrix(c))
 
 
 def test_unique_diags_list():

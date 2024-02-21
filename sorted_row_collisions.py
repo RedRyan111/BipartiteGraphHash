@@ -65,14 +65,14 @@ def split_r_collisions(r_collisions, diags):
             c_start = diags[j]
             c_end = diags[j + 1]
 
-            split_collisions = r_collisions[r_start:r_end, c_start:c_end]
-            sorted_split_collisions = np.sort(split_collisions)
-            r_collisions[r_start:r_end, c_start:c_end] = sorted_split_collisions
+            #split_collisions = r_collisions[r_start:r_end, c_start:c_end]
+            #sorted_split_collisions = np.sort(split_collisions)
+            #r_collisions[r_start:r_end, c_start:c_end] = sorted_split_collisions
             # np.sort(r_collisions[r_start:r_end, c_start:c_end])
-            # if i <= j:
-            #    r_collisions[r_start:r_end, c_start:c_end] = np.sort(r_collisions[r_start:r_end, c_start:c_end])
-            # else:
-            #    r_collisions[r_start:r_end, c_start:c_end] = np.zeros((r_end-r_start, c_end-c_start))
+            if i <= j:
+                r_collisions[r_start:r_end, c_start:c_end] = np.sort(r_collisions[r_start:r_end, c_start:c_end])
+            else:
+                r_collisions[r_start:r_end, c_start:c_end] = np.zeros((r_end-r_start, c_end-c_start))
             #    #np.sort(r_collisions[r_start:r_end, c_start:c_end], axis=1)
 
     return r_collisions
