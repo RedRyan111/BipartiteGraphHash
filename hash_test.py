@@ -100,6 +100,21 @@ def gen(n, m):
         yield np.array([int(k) for k in "{0:b}".format(i).zfill(n * m)]).reshape(n, m)
 
 
+def format_array(array_string):
+    array_string = array_string.replace("\n", "")
+    array_string = array_string.replace(" ", ",")
+    return np.array(eval(array_string))
+
+
+sizes = 4
+matrix = np.random.randint(2, size=(sizes, sizes))
+print(matrix)
+print('--------------')
+hash_dict = hash_test(matrix)
+for i in hash_dict:
+    print(format_array(i).reshape(sizes, sizes))
+
+
 sizes = 4
 print(f"num of matrices: {int(2 ** (sizes * sizes))}")
 num_of_matrices = int(2 ** (sizes * sizes))
@@ -107,13 +122,14 @@ count = 0
 for mat in gen(sizes, sizes):
     if count % 1000 == 0:
         print(f"{count}/{num_of_matrices}")
-    fast_hash_testing(mat)
+    new_fast_hash_testing(mat)
     count += 1
 
 
 sizes = 50
 for i in range(1000):
     if i % 50 == 0:
-        print(i)
+        print(i/1000)
     matrix = np.random.randint(2, size=(sizes, sizes))
     fast_hash_testing(matrix)
+

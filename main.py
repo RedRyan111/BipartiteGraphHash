@@ -8,10 +8,10 @@ bipartite_adjacency_matrix = np.random.randint(2, size=(sizes, sizes))
 #bipartite_adjacency_matrix = np.ones((sizes, sizes))
 print(bipartite_adjacency_matrix)
 
-a = time.time()
-hashed_bipartite_adjacency_matrix = old_hash_adjacency_matrix(bipartite_adjacency_matrix)
-b = time.time()
-old_time = b-a
+#a = time.time()
+#hashed_bipartite_adjacency_matrix = old_hash_adjacency_matrix(bipartite_adjacency_matrix)
+#b = time.time()
+#old_time = b-a
 
 print(bipartite_adjacency_matrix)
 a = time.time()

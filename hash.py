@@ -15,7 +15,7 @@ def hash_adjacency_matrix(matrix):
 def hash_adjacency_matrix_helper(matrix):
     r_collisions = row_collisions(matrix)
     r_diag = np.diag(r_collisions).reshape(1, -1).repeat(r_collisions.shape[0], axis=0)
-    #stacked_matrices = np.stack([r_collisions, r_diag], axis=2)
+    # stacked_matrices = np.stack([r_collisions, r_diag], axis=2)
     stacked_matrices = np.stack([r_diag, r_collisions], axis=2)
 
     stacked_matrices = np.sort(stacked_matrices, axis=1)
